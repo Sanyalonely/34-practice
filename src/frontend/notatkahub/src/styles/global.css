@@ -1,0 +1,32 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-primary: #000000;
+  --color-background: #e3e3e3;
+  --color-background-bars: #f0f0f0;
+  --color-border-bars: #c2c2c2;
+  --color-primary-dark: #ffff;
+  --color-background-dark: #2c2c2c;
+  --color-background-bar-dark: #494949;
+  --color-border-bars-dark: #555555;
+}
+
+:root {
+  --color-primary: #000000;
+  --color-background: #e3e3e3;
+  --color-background-bars: #f0f0f0;
+  --color-border-bars: #c2c2c2;
+  --color-primary-dark: #ffff;
+  --color-secondary-dark: #919191;
+  --color-background-dark: #2c2c2c;
+  --color-background-bar-dark: #494949;
+  --color-border-bars-dark: #555555;
+}
+
+body {
+  font-family: "SF Pro Text";
+  min-height: 100vh;
+}
