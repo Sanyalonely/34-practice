@@ -12,9 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TrashRouteImport } from './routes/trash'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as NotFoundRouteImport } from './routes/notFound'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as CreateNoteRouteImport } from './routes/createNote'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 
 const TrashRoute = TrashRouteImport.update({
@@ -32,6 +32,11 @@ const ProfileRoute = ProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NotFoundRoute = NotFoundRouteImport.update({
+  id: '/notFound',
+  path: '/notFound',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -42,11 +47,6 @@ const CreateNoteRoute = CreateNoteRouteImport.update({
   path: '/createNote',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -55,18 +55,18 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/createNote': typeof CreateNoteRoute
   '/login': typeof LoginRoute
+  '/notFound': typeof NotFoundRoute
   '/profile': typeof ProfileRoute
   '/signup': typeof SignupRoute
   '/trash': typeof TrashRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/createNote': typeof CreateNoteRoute
   '/login': typeof LoginRoute
+  '/notFound': typeof NotFoundRoute
   '/profile': typeof ProfileRoute
   '/signup': typeof SignupRoute
   '/trash': typeof TrashRoute
@@ -74,9 +74,9 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/createNote': typeof CreateNoteRoute
   '/login': typeof LoginRoute
+  '/notFound': typeof NotFoundRoute
   '/profile': typeof ProfileRoute
   '/signup': typeof SignupRoute
   '/trash': typeof TrashRoute
@@ -85,27 +85,27 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/about'
     | '/createNote'
     | '/login'
+    | '/notFound'
     | '/profile'
     | '/signup'
     | '/trash'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/about'
     | '/createNote'
     | '/login'
+    | '/notFound'
     | '/profile'
     | '/signup'
     | '/trash'
   id:
     | '__root__'
     | '/'
-    | '/about'
     | '/createNote'
     | '/login'
+    | '/notFound'
     | '/profile'
     | '/signup'
     | '/trash'
@@ -113,9 +113,9 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
   CreateNoteRoute: typeof CreateNoteRoute
   LoginRoute: typeof LoginRoute
+  NotFoundRoute: typeof NotFoundRoute
   ProfileRoute: typeof ProfileRoute
   SignupRoute: typeof SignupRoute
   TrashRoute: typeof TrashRoute
@@ -144,6 +144,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/notFound': {
+      id: '/notFound'
+      path: '/notFound'
+      fullPath: '/notFound'
+      preLoaderRoute: typeof NotFoundRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -158,13 +165,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CreateNoteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -177,9 +177,9 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
   CreateNoteRoute: CreateNoteRoute,
   LoginRoute: LoginRoute,
+  NotFoundRoute: NotFoundRoute,
   ProfileRoute: ProfileRoute,
   SignupRoute: SignupRoute,
   TrashRoute: TrashRoute,
