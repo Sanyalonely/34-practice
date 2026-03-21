@@ -22,12 +22,12 @@ function RouteComponent() {
     setOpenedModalSidebar(!isModalSidebarOpened);
   };
   return (
-    <div className="relative min-h-screen">
+    <div className="min-h-screen">
       <Header openModalSidebar={handleOpenModalSidebar} />
-      {isModalSidebarOpened && (
-        <Sidebar isModalSidebarOpened={isModalSidebarOpened} />
-      )}
-      <div className="flex min-h-screen flex-col items-center justify-center text-center whitespace-pre-line">
+      <div className="relative flex min-h-screen flex-col items-center justify-center text-center whitespace-pre-line">
+        {isModalSidebarOpened && (
+          <Sidebar isModalSidebarOpened={isModalSidebarOpened} />
+        )}
         {windowWidth > 900 ? (
           <pre className="text-center font-[Sf_pro_Text] text-2xl font-bold text-[var(--color-primary)] dark:text-[var(--color-primary-dark)]">
             {`Ти відкрив цю сторінку випадково.

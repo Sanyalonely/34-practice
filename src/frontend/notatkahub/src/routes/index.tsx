@@ -18,7 +18,7 @@ function App() {
   return (
     <div className="relative flex min-h-screen flex-col">
       <Header openModalSidebar={handleOpenModalSidebar} />
-      <div className="flex flex-1">
+      <div className="relative flex flex-1">
         <Sidebar isModalSidebarOpened={isModalSidebarOpened} />
         <main className="flex-1 py-5 max-xl:px-2 xl:px-5">
           <ul className="flex flex-row flex-wrap items-center max-xl:flex-col">

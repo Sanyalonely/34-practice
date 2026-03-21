@@ -23,7 +23,7 @@ function RouteComponent() {
     };
   }, []);
   return (
-    <>
+    <div className="relative">
       <Header openModalSidebar={handleOpenModalSidebar} />
       {windowWidth < 1280 && (
         <Sidebar isModalSidebarOpened={isModalSidebarOpened} />
@@ -72,8 +72,8 @@ function RouteComponent() {
           </div>
         </div>
       ) : (
-        <div className="flex w-full flex-col">
-          <div className="mb-5">
+        <div className="flex w-full flex-col items-center justify-center">
+          <div className="mb-5 w-[70%]">
             <img
               className="w-full object-contain"
               src="/add.png"
@@ -115,6 +115,6 @@ function RouteComponent() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }

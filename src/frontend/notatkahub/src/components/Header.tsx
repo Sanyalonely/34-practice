@@ -31,8 +31,8 @@ export default function Header({ openModalSidebar }: Props) {
             <use href="/burger.svg" />
           </svg>
           <Logo />
-          <Link to="/profile">
-            <svg width={45} height={45}>
+          <Link to="/profile" className="flex items-center justify-center">
+            <svg width={38} height={38}>
               <use href="/account.svg" />
             </svg>
           </Link>
