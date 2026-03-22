@@ -10,7 +10,7 @@ const stub = (req, res) => res.send('В розробці');
  * @swagger
  * /auth/registration:
  *   post:
- *     summary: Реєстрація користувача
+ *     summary: Реєстрація користувача, відправка активаційного листа на віддаленому сервері не працює
  *     tags: [Auth]
  *     requestBody:
  *       required: true
