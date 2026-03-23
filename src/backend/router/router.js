@@ -808,10 +808,10 @@ routs.delete('/trash/deleteNote/:id', authMidleware, noteServise.deleteNote)
 
 /**
  * @swagger
- * /auth/updateUser:
+ * /user/update:
  *   patch:
  *     summary: Оновлення даних профілю користувача
- *     tags: [Auth]
+ *     tags: [User]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
