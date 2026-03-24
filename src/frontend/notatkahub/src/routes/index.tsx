@@ -42,16 +42,16 @@ function App() {
     const checkToken = async () => {
       const token = await refresh();
       Cookies.set("accessToken", token.accessToken);
-      //  const accessToken = Cookies.get("accessToken");
+      const accessToken = Cookies.get("accessToken");
 
-      // if (!accessToken) {
-      //   try {
-      //     const responce = await refresh();
-      //     Cookies.set("accessToken", responce.accessToken);
-      //   } catch {
-      //     navigate({ to: "/signup" });
-      //   }
-      // }
+      if (!accessToken) {
+        try {
+          const responce = await refresh();
+          Cookies.set("accessToken", responce.accessToken);
+        } catch {
+          navigate({ to: "/signup" });
+        }
+      }
     };
     checkToken();
   }, []);
