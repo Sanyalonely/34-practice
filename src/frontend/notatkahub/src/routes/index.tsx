@@ -12,17 +12,19 @@ import {
   addNoteToTrash,
 } from "#/lib/api/notesApi";
 import type { PinNoteRequest } from "#/lib/api/notesApi";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 import Cookies from "js-cookie";
 import { MoonLoader } from "react-spinners";
 import { useDebouncedCallback } from "use-debounce";
+import Pagination from "#/components/Pagination/Pagination";
 
 export const Route = createFileRoute("/")({ component: App });
 
 function App() {
+  const queryClient = useQueryClient();
   const [notes, setNotes] = useState<OneNote[]>([]);
   const [text, setText] = useState("");
   const [page, setPage] = useState(1);
@@ -35,13 +37,20 @@ function App() {
   const accessToken = Cookies.get("accessToken");
 
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ["notes"],
+    queryKey: ["notes", page],
     queryFn: () => getNotes({ page, limit }),
   });
 
-  const totalPage = data?.totalPages;
-  const pinnedNotes = notes.filter((note) => note.isPinned == true);
-  const unpinnedNotes = notes.filter((note) => note.isPinned == false);
+  const { data: allNotesData } = useQuery({
+    queryKey: ["notes", "all"],
+    queryFn: () => getNotes({ page: 1, limit: 9999 }),
+  });
+
+  const totalPages = data?.totalPages;
+  const pinnedNotes = (allNotesData?.notes ?? []).filter(
+    (note: OneNote) => note.isPinned === true,
+  );
+  const unpinnedNotes = notes.filter((note) => note.isPinned === false);
 
   useEffect(() => {
     if (data?.notes) {
@@ -100,6 +109,9 @@ function App() {
 
     try {
       await pinNote({ id, pin });
+      // Оновлюємо обидва запити
+      queryClient.invalidateQueries({ queryKey: ["notes", "all"] });
+      queryClient.invalidateQueries({ queryKey: ["notes", page] });
     } catch {
       setNotes((prev) =>
         prev.map((note) =>
@@ -107,6 +119,10 @@ function App() {
         ),
       );
     }
+  };
+
+  const handleChangePage = (page: number) => {
+    setPage(page);
   };
 
   return (
@@ -161,11 +177,11 @@ function App() {
               </div>
             )}
             {notes.length != 0 ? (
-              <>
+              <div className="mb-10">
                 {pinnedNotes.length != 0 ? (
                   <div className="flex flex-col items-center justify-center gap-4">
                     <ul className="flex flex-row flex-wrap items-center justify-center gap-x-16.75 gap-y-5">
-                      {pinnedNotes.map((note) => (
+                      {pinnedNotes.map((note: OneNote) => (
                         <Note
                           key={note.id}
                           title={note.title}
@@ -216,13 +232,20 @@ function App() {
                     ))}
                   </ul>
                 )}
-              </>
+              </div>
             ) : (
               <div className="flex flex-1 items-center justify-center">
                 <h2 className="w-77 text-center text-3xl font-semibold text-neutral-400">
                   Here will be displayed your notes. No there are no notes
                 </h2>
               </div>
+            )}
+            {data && totalPages > 1 && (
+              <Pagination
+                currentPage={page}
+                totalPages={totalPages}
+                handleChangePage={handleChangePage}
+              />
             )}
           </main>
         </div>

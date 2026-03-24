@@ -17,7 +17,15 @@ if (savedTheme === "dark") {
   document.documentElement.classList.add("dark");
 }
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5,
+      retry: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function RootComponent() {
   return (
