@@ -54,23 +54,21 @@ const MoreInfoNote = ({ id, handleClose }: MoreInfoNoteProps) => {
           />
         </div>
       ) : (
-        <div
-          className={`reative ${windowWidth < 1280 ? "px-10 pt-10 pb-5" : "px-5 pt-5 pb-2"}`}
-        >
+        <div className={`relative flex min-h-full flex-col justify-between`}>
           {windowWidth < 1280 ? (
             <>
               <div className="mb-5 flex justify-between">
                 <Link
                   to="/editNote/$noteId"
                   params={{ noteId: id }}
-                  className="flex h-fit cursor-pointer items-center justify-center gap-3 rounded-lg bg-orange-400 px-3 py-1 text-lg text-sm font-bold text-white"
+                  className="flex h-fit cursor-pointer items-center justify-center gap-3 rounded-lg bg-orange-400 px-3 py-1 text-sm font-bold text-white"
                 >
                   <BsPencilFill className="text-black" />
                   Edit note
                 </Link>
                 <button
                   onClick={handleExportNote}
-                  className="flex h-fit cursor-pointer items-center justify-center gap-3 rounded-lg bg-orange-400 px-3 py-1 text-lg text-sm font-bold text-white"
+                  className="flex h-fit cursor-pointer items-center justify-center gap-3 rounded-lg bg-orange-400 px-3 py-1 text-sm font-bold text-white"
                 >
                   <FiUploadCloud className="text-black" />
                   Export note
@@ -89,7 +87,7 @@ const MoreInfoNote = ({ id, handleClose }: MoreInfoNoteProps) => {
               <div className="prose dark:prose-invert mb-10 text-[var(--color-primary)] dark:text-[var(--color-primary-dark)]">
                 <Markdown>{`# ${data?.note?.title}\n\n${data?.note?.content}`}</Markdown>
               </div>
-              <div className="flex justify-between self-end">
+              <div className="flex w-full justify-between self-end">
                 <div className="flex flex-row items-center gap-10">
                   <Link
                     to="/editNote/$noteId"

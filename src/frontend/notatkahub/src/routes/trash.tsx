@@ -2,13 +2,19 @@ import Header from "#/components/Header";
 import Sidebar from "#/components/Sidebar/Sidebar";
 import Modal from "#/components/Modal/Modal";
 import DeletedNote from "#/components/DeletedNote/DeletedNote";
-import MoreInfoNote from "#/components/MoreInfoNote/MoreInfoNote";
-import { getNotesFromTrash, deleteNoteFromTrash } from "#/lib/api/notesApi";
+import TrashMoreInfoNote from "#/components/TrashMoreInfoNote/TrashMoreInfoNote";
+import {
+  getNotesFromTrash,
+  deleteNoteFromTrash,
+  reviveNote,
+  searchNoteFromTrash,
+} from "#/lib/api/notesApi";
 import type { trashNotes } from "#/types/note";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 import { useQuery } from "@tanstack/react-query";
+import { useDebouncedCallback } from "use-debounce";
 
 export const Route = createFileRoute("/trash")({
   component: RouteComponent,
@@ -17,6 +23,7 @@ export const Route = createFileRoute("/trash")({
 function RouteComponent() {
   const [notes, setNotes] = useState<trashNotes[]>([]);
   const [page, setPage] = useState(1);
+  const [text, setText] = useState("");
   const [noteModal, setNoteModal] = useState<string>();
   const [isViewedMorePaga, setIsViewedMorePage] = useState(false);
   const [isModalSidebarOpened, setOpenedModalSidebar] = useState(false);
@@ -34,6 +41,19 @@ function RouteComponent() {
       setNotes(data.notes);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (!text) {
+      if (data?.notes) setNotes(data.notes);
+      return;
+    }
+
+    const fetchQueryNotes = async () => {
+      const { note } = await searchNoteFromTrash(text);
+      setNotes(note);
+    };
+    fetchQueryNotes();
+  }, [text, data]);
 
   const totalPages = data?.totalPages;
 
@@ -63,9 +83,26 @@ function RouteComponent() {
     }
   };
 
+  const handleRecoverNote = async (id: string) => {
+    setNotes((prev) => prev.filter((note) => note.id != id));
+    try {
+      await reviveNote(id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSearch = useDebouncedCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => setText(event.target.value),
+    1000,
+  );
+
   return (
     <div className="relative flex min-h-screen flex-col">
-      <Header openModalSidebar={handleOpenModalSidebar} />
+      <Header
+        openModalSidebar={handleOpenModalSidebar}
+        onSearch={handleSearch}
+      />
       <div className="relative flex flex-1">
         <Sidebar isModalSidebarOpened={isModalSidebarOpened} />
         <main className="flex flex-1 flex-col py-5 max-xl:items-center max-xl:px-2 xl:px-5">
@@ -89,10 +126,11 @@ function RouteComponent() {
               </div>
               <div className="relative w-full">
                 <input
-                  className="h-10 w-full rounded-lg bg-white pl-10 outline-none placeholder:text-neutral-500 dark:border-2 dark:border-neutral-400 dark:bg-transparent dark:placeholder:text-neutral-400"
+                  className="h-10 w-full rounded-lg bg-white pl-10 text-black outline-none placeholder:text-neutral-500 dark:border-2 dark:border-neutral-400 dark:bg-transparent dark:text-neutral-300 dark:placeholder:text-neutral-400"
                   type="text"
                   name="query"
                   placeholder="Search"
+                  onChange={handleSearch}
                 />
                 <IoSearchOutline className="absolute top-1/2 left-2.5 left-3 -translate-y-1/2 text-neutral-500" />
               </div>
@@ -109,6 +147,7 @@ function RouteComponent() {
                   (setIsViewedMorePage(true), setNoteModal(id));
                 }}
                 handleDeleteNote={handleDeleteNote}
+                handleRecoverNote={handleRecoverNote}
               />
             ))}
           </ul>
@@ -116,7 +155,7 @@ function RouteComponent() {
       </div>
       {isViewedMorePaga && noteModal && (
         <Modal handleClose={closeModal}>
-          <MoreInfoNote id={noteModal} handleClose={closeModal} />
+          <TrashMoreInfoNote id={noteModal} handleClose={closeModal} />
         </Modal>
       )}
     </div>

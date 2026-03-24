@@ -95,7 +95,10 @@ export const getNotesFromTrash = async ({
   return responce.data;
 };
 
-// export const searchNoteFromTrash = async () => {}; Те саме що і в минулому випадкові
+export const searchNoteFromTrash = async (text: string) => {
+  const responce = await api.get("/trash/search", { params: { text } });
+  return responce.data;
+};
 
 export const getNoteByIdFromTrash = async (id: string) => {
   const responce = await api.get(`/trash/getOne/${id}`, { params: { id } });

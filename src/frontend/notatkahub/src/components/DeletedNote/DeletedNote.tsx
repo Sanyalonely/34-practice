@@ -6,6 +6,7 @@ type Props = {
   id: string;
   handleView: (id: string) => void;
   handleDeleteNote: (id: string) => void;
+  handleRecoverNote: (id: string) => void;
 };
 
 const DeletedNote = ({
@@ -14,6 +15,7 @@ const DeletedNote = ({
   id,
   handleView,
   handleDeleteNote,
+  handleRecoverNote,
 }: Props) => {
   return (
     <li
@@ -32,7 +34,10 @@ const DeletedNote = ({
           View note
         </button>
 
-        <button className="rounded-lg bg-orange-400 px-2 py-2 text-xs font-bold text-[var(--color-primary-dark)] dark:text-[var(--color-primary)]">
+        <button
+          onClick={() => handleRecoverNote(id)}
+          className="rounded-lg bg-orange-400 px-2 py-2 text-xs font-bold text-[var(--color-primary-dark)] dark:text-[var(--color-primary)]"
+        >
           Recover note
         </button>
         <button
