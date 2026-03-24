@@ -40,8 +40,6 @@ function App() {
 
   useEffect(() => {
     const checkToken = async () => {
-      const token = await refresh();
-      Cookies.set("accessToken", token.accessToken);
       const accessToken = Cookies.get("accessToken");
 
       if (!accessToken) {
