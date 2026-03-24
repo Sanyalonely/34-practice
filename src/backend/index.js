@@ -69,7 +69,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 app.use(cors({
     credentials: true,
-    origin: process.env.CLIENT_URL 
+    origin: process.env.CLIENT_URL ? process.env.CLIENT_URL.trim() : true
 }));
 app.use(cookieParser())
 app.use(express.json())
