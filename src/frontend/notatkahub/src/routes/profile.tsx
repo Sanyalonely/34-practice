@@ -53,8 +53,11 @@ function RouteComponent() {
     const email = (formData.get("email") as string) || "";
     try {
       await updateUser(email, username);
-      if (username) setUserStore({ ...user, username });
-      if (email) setUserStore({ ...user, email });
+      setUserStore({
+        ...user,
+        ...(username && { username }),
+        ...(email && { email }),
+      });
     } catch (error) {
       console.log(error);
     }

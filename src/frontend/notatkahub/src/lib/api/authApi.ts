@@ -44,7 +44,12 @@ export const logout = async () => {
 };
 
 export const refresh = async () => {
-  const response = await api.get("/token/refresh");
+  const response = await axios.get(
+    "https://three4-practice.onrender.com/api/token/refresh",
+    {
+      withCredentials: true,
+    },
+  );
   return response.data;
 };
 

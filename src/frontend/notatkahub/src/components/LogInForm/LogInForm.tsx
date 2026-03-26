@@ -37,7 +37,7 @@ const LogInForm = () => {
         email: responce.user.email,
       });
       console.log(responce);
-      Cookies.set("accessToken", responce.accesToken, { expires: 1 });
+      Cookies.set("accessToken", responce.accesToken);
       await navigation({ to: "/" });
     } catch (error) {
       console.log(error);

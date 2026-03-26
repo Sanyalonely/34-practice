@@ -1,10 +1,6 @@
 import Logo from "#/components/Logo/Logo";
-import { createFileRoute, useRouter, Link } from "@tanstack/react-router";
+import { useRouter, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-
-export const Route = createFileRoute("/notFound")({
-  component: RouteComponent,
-});
 
 export default function RouteComponent() {
   const router = useRouter();

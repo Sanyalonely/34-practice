@@ -14,3 +14,26 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      try {
+        const newToken = await refresh();
+        Cookies.set("accessToken", newToken.accessToken);
+        originalRequest.headers.Authorization = `Bearer ${newToken.accessToken}`;
+        return api(originalRequest);
+      } catch {
+        console.log(error);
+        return Promise.reject(error);
+      }
+    }
+
+    return Promise.reject(error);
+  },
+);

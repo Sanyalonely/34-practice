@@ -13,7 +13,6 @@ import { Route as TravelerRouteImport } from './routes/traveler'
 import { Route as TrashRouteImport } from './routes/trash'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as ProfileRouteImport } from './routes/profile'
-import { Route as NotFoundRouteImport } from './routes/notFound'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as CreateNoteRouteImport } from './routes/createNote'
 import { Route as AddRouteImport } from './routes/add'
@@ -38,11 +37,6 @@ const SignupRoute = SignupRouteImport.update({
 const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const NotFoundRoute = NotFoundRouteImport.update({
-  id: '/notFound',
-  path: '/notFound',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -76,7 +70,6 @@ export interface FileRoutesByFullPath {
   '/add': typeof AddRoute
   '/createNote': typeof CreateNoteRoute
   '/login': typeof LoginRoute
-  '/notFound': typeof NotFoundRoute
   '/profile': typeof ProfileRoute
   '/signup': typeof SignupRoute
   '/trash': typeof TrashRoute
@@ -88,7 +81,6 @@ export interface FileRoutesByTo {
   '/add': typeof AddRoute
   '/createNote': typeof CreateNoteRoute
   '/login': typeof LoginRoute
-  '/notFound': typeof NotFoundRoute
   '/profile': typeof ProfileRoute
   '/signup': typeof SignupRoute
   '/trash': typeof TrashRoute
@@ -101,7 +93,6 @@ export interface FileRoutesById {
   '/add': typeof AddRoute
   '/createNote': typeof CreateNoteRoute
   '/login': typeof LoginRoute
-  '/notFound': typeof NotFoundRoute
   '/profile': typeof ProfileRoute
   '/signup': typeof SignupRoute
   '/trash': typeof TrashRoute
@@ -115,7 +106,6 @@ export interface FileRouteTypes {
     | '/add'
     | '/createNote'
     | '/login'
-    | '/notFound'
     | '/profile'
     | '/signup'
     | '/trash'
@@ -127,7 +117,6 @@ export interface FileRouteTypes {
     | '/add'
     | '/createNote'
     | '/login'
-    | '/notFound'
     | '/profile'
     | '/signup'
     | '/trash'
@@ -139,7 +128,6 @@ export interface FileRouteTypes {
     | '/add'
     | '/createNote'
     | '/login'
-    | '/notFound'
     | '/profile'
     | '/signup'
     | '/trash'
@@ -152,7 +140,6 @@ export interface RootRouteChildren {
   AddRoute: typeof AddRoute
   CreateNoteRoute: typeof CreateNoteRoute
   LoginRoute: typeof LoginRoute
-  NotFoundRoute: typeof NotFoundRoute
   ProfileRoute: typeof ProfileRoute
   SignupRoute: typeof SignupRoute
   TrashRoute: typeof TrashRoute
@@ -188,13 +175,6 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof ProfileRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/notFound': {
-      id: '/notFound'
-      path: '/notFound'
-      fullPath: '/notFound'
-      preLoaderRoute: typeof NotFoundRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -240,7 +220,6 @@ const rootRouteChildren: RootRouteChildren = {
   AddRoute: AddRoute,
   CreateNoteRoute: CreateNoteRoute,
   LoginRoute: LoginRoute,
-  NotFoundRoute: NotFoundRoute,
   ProfileRoute: ProfileRoute,
   SignupRoute: SignupRoute,
   TrashRoute: TrashRoute,
