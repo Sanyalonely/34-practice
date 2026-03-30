@@ -2,7 +2,7 @@ import Logo from "#/components/Logo/Logo";
 import { useRouter, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 
-export default function RouteComponent() {
+export default function NotFoundPage() {
   const router = useRouter();
 
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);

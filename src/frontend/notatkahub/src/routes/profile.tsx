@@ -1,8 +1,8 @@
 import Header from "#/components/Header";
 import Sidebar from "#/components/Sidebar/Sidebar";
 import { useUserStore } from "#/lib/store/userStore";
+import { useNoteDraftStore } from "#/lib/store/draft";
 import { updateUser, logout, refresh } from "#/lib/api/authApi";
-import { getNotes } from "#/lib/api/notesApi";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
@@ -17,6 +17,8 @@ function RouteComponent() {
   const user = useUserStore((state) => state.user);
   const clearUserStore = useUserStore((state) => state.clearUserStore);
   const setUserStore = useUserStore((state) => state.setUserStore);
+
+  const clearDraft = useNoteDraftStore((state) => state.clearDraft);
 
   const [isModalSidebarOpened, setOpenedModalSidebar] = useState(false);
 
@@ -33,20 +35,20 @@ function RouteComponent() {
     };
   }, []);
 
-  useEffect(() => {
-    const checkToken = async () => {
-      const accessToken = Cookies.get("accessToken");
-      if (!accessToken) {
-        try {
-          const responce = await refresh();
-          Cookies.set("accessToken", responce.accessToken);
-        } catch {
-          navigate({ to: "/signup" });
-        }
-      }
-    };
-    checkToken();
-  }, []);
+  // useEffect(() => {
+  //   const checkToken = async () => {
+  //     const accessToken = Cookies.get("accessToken");
+  //     if (!accessToken) {
+  //       try {
+  //         const responce = await refresh();
+  //         Cookies.set("accessToken", responce.accessToken);
+  //       } catch {
+  //         navigate({ to: "/signup" });
+  //       }
+  //     }
+  //   };
+  //   checkToken();
+  // }, []);
 
   const handleSubmit = async (formData: FormData) => {
     const username = (formData.get("username") as string) || "";
@@ -65,6 +67,7 @@ function RouteComponent() {
 
   const handleLogout = async () => {
     clearUserStore();
+    clearDraft();
     Cookies.remove("accessToken");
     navigate({ to: "/login" });
     try {

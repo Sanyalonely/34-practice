@@ -3,12 +3,13 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Outlet, createRootRoute } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { TanStackDevtools } from "@tanstack/react-devtools";
-import notFound from "#/routes/notFound.tsx";
+import { Toaster } from "react-hot-toast";
+import NotFoundPage from "#/routes/notFound.tsx";
 
 import "../styles/global.css";
 
 export const Route = createRootRoute({
-  notFoundComponent: notFound,
+  notFoundComponent: NotFoundPage,
   component: RootComponent,
 });
 
@@ -43,6 +44,7 @@ function RootComponent() {
             },
           ]}
         />
+        <Toaster position="top-right" />
       </div>
       <ReactQueryDevtools />
     </QueryClientProvider>

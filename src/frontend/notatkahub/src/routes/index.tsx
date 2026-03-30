@@ -12,15 +12,13 @@ import {
   addNoteToTrash,
 } from "#/lib/api/notesApi";
 import type { PinNoteRequest } from "#/lib/api/notesApi";
+import Pagination from "#/components/Pagination/Pagination";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { IoSearchOutline } from "react-icons/io5";
-import Cookies from "js-cookie";
 import { MoonLoader } from "react-spinners";
 import { useDebouncedCallback } from "use-debounce";
-import Pagination from "#/components/Pagination/Pagination";
-import { refresh } from "#/lib/api/authApi";
 
 export const Route = createFileRoute("/")({ component: App });
 
@@ -38,23 +36,23 @@ function App() {
 
   const limit = 12;
 
-  useEffect(() => {
-    const checkToken = async () => {
-      const accessToken = Cookies.get("accessToken");
+  // useEffect(() => {
+  //   const checkToken = async () => {
+  //     const accessToken = Cookies.get("accessToken");
 
-      if (!accessToken) {
-        try {
-          const responce = await refresh();
-          Cookies.set("accessToken", responce.accessToken);
-        } catch {
-          navigate({ to: "/signup" });
-        }
-      }
-    };
-    checkToken();
-  }, []);
+  //     if (!accessToken) {
+  //       try {
+  //         const responce = await refresh();
+  //         Cookies.set("accessToken", responce.accessToken);
+  //       } catch {
+  //         navigate({ to: "/signup" });
+  //       }
+  //     }
+  //   };
+  //   checkToken();
+  // }, []);
 
-  const { data, isLoading, refetch } = useQuery({
+  const { data, isLoading, refetch, isSuccess, isError } = useQuery({
     queryKey: ["notes", page],
     queryFn: () => getNotes({ page, limit }),
     refetchOnMount: true,

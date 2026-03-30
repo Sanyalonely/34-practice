@@ -27,7 +27,9 @@ api.interceptors.response.use(
         const newToken = await refresh();
         Cookies.set("accessToken", newToken.accessToken);
         originalRequest.headers.Authorization = `Bearer ${newToken.accessToken}`;
-        return api(originalRequest);
+        const response = await api(originalRequest); // Дочекатися виконання запиту
+        // window.location.reload(); // Перезавантажити сторінку
+        return response;
       } catch {
         console.log(error);
         return Promise.reject(error);

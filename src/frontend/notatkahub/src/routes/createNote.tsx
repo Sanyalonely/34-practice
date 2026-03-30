@@ -1,13 +1,12 @@
 import Header from "#/components/Header";
 import { useNoteDraftStore } from "#/lib/store/draft";
-import { createNote, getNotes } from "#/lib/api/notesApi";
-import { refresh } from "#/lib/api/authApi";
+import { createNote } from "#/lib/api/notesApi";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect, useRef } from "react";
 import { FiUploadCloud } from "react-icons/fi";
 import Markdown from "react-markdown";
-import Cookies from "js-cookie";
 import { useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 export const Route = createFileRoute("/createNote")({
   component: RouteComponent,
@@ -57,20 +56,20 @@ function RouteComponent() {
     reader.readAsText(file);
   };
 
-  useEffect(() => {
-    const checkToken = async () => {
-      const accessToken = Cookies.get("accessToken");
-      if (!accessToken) {
-        try {
-          const responce = await refresh();
-          Cookies.set("accessToken", responce.accessToken);
-        } catch {
-          navigate({ to: "/signup" });
-        }
-      }
-    };
-    checkToken();
-  }, []);
+  // useEffect(() => {
+  //   const checkToken = async () => {
+  //     const accessToken = Cookies.get("accessToken");
+  //     if (!accessToken) {
+  //       try {
+  //         const responce = await refresh();
+  //         Cookies.set("accessToken", responce.accessToken);
+  //       } catch {
+  //         navigate({ to: "/signup" });
+  //       }
+  //     }
+  //   };
+  //   checkToken();
+  // }, []);
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -87,8 +86,11 @@ function RouteComponent() {
       await createNote({ title, content });
       clearDraft();
       await queryClient.invalidateQueries({ queryKey: ["notes"] });
+      toast.success("Big success!");
       navigate({ to: "/" });
-    } catch {}
+    } catch (error: any) {
+      toast.error(error.response?.data?.message);
+    }
   };
 
   return (
@@ -261,6 +263,7 @@ function RouteComponent() {
                       placeholder="Description"
                       id="content"
                       value={noteContent}
+                      maxLength={3000}
                       onChange={(e) => {
                         setNoteContent(e.target.value);
                         setDraft({

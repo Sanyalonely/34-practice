@@ -4,6 +4,7 @@ import { useUserStore } from "#/lib/store/userStore";
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import Cookies from "js-cookie";
+import toast from "react-hot-toast";
 import { deviceType, osName, browserName } from "react-device-detect";
 
 const LogInForm = () => {
@@ -36,11 +37,11 @@ const LogInForm = () => {
         username: responce.user.username,
         email: responce.user.email,
       });
-      console.log(responce);
+      toast.success("Big success!");
       Cookies.set("accessToken", responce.accesToken);
       await navigation({ to: "/" });
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      toast.error(error.response?.data?.message);
     }
   };
   return (

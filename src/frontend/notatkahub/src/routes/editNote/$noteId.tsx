@@ -6,13 +6,12 @@ import {
   useParams,
   useNavigate,
 } from "@tanstack/react-router";
-import { refresh } from "#/lib/api/authApi";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState, useEffect, useRef } from "react";
 import { FiUploadCloud } from "react-icons/fi";
 import Markdown from "react-markdown";
-import Cookies from "js-cookie";
 import { MoonLoader } from "react-spinners";
+import toast from "react-hot-toast";
 
 export const Route = createFileRoute("/editNote/$noteId")({
   component: RouteComponent,
@@ -35,20 +34,20 @@ function RouteComponent() {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    const checkToken = async () => {
-      const accessToken = Cookies.get("accessToken");
-      if (!accessToken) {
-        try {
-          const responce = await refresh();
-          Cookies.set("accessToken", responce.accessToken);
-        } catch {
-          navigate({ to: "/signup" });
-        }
-      }
-    };
-    checkToken();
-  }, []);
+  // useEffect(() => {
+  //   const checkToken = async () => {
+  //     const accessToken = Cookies.get("accessToken");
+  //     if (!accessToken) {
+  //       try {
+  //         const responce = await refresh();
+  //         Cookies.set("accessToken", responce.accessToken);
+  //       } catch {
+  //         navigate({ to: "/signup" });
+  //       }
+  //     }
+  //   };
+  //   checkToken();
+  // }, []);
 
   useEffect(() => {
     if (data?.note) {
@@ -99,9 +98,10 @@ function RouteComponent() {
     try {
       await updateNote({ id: noteId, title, content });
       await queryClient.invalidateQueries({ queryKey: ["notes"] });
+      toast.success("Big success!");
       navigate({ to: "/" });
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      toast.error(error.response?.data?.message);
     }
   };
 

@@ -61,20 +61,20 @@ function RouteComponent() {
     fetchQueryNotes();
   }, [text, data]);
 
-  useEffect(() => {
-    const checkToken = async () => {
-      const accessToken = Cookies.get("accessToken");
-      if (!accessToken) {
-        try {
-          const responce = await refresh();
-          Cookies.set("accessToken", responce.accessToken);
-        } catch {
-          navigate({ to: "/signup" });
-        }
-      }
-    };
-    checkToken();
-  }, []);
+  // useEffect(() => {
+  //   const checkToken = async () => {
+  //     const accessToken = Cookies.get("accessToken");
+  //     if (!accessToken) {
+  //       try {
+  //         const responce = await refresh();
+  //         Cookies.set("accessToken", responce.accessToken);
+  //       } catch {
+  //         navigate({ to: "/signup" });
+  //       }
+  //     }
+  //   };
+  //   checkToken();
+  // }, []);
 
   const totalPages = data?.totalPages;
 
@@ -148,12 +148,6 @@ function RouteComponent() {
                 <h1 className="text-4xl font-medium text-[var(--color-primary)] dark:text-[var(--color-primary-dark)]">
                   Notes
                 </h1>
-                <Link
-                  to="/createNote"
-                  className="h-fit cursor-pointer rounded-lg bg-orange-400 px-6 py-2 text-lg font-bold text-[var(--color-primary)] dark:text-[var(--color-primary-dark)]"
-                >
-                  Create Note
-                </Link>
               </div>
               <div className="relative w-full">
                 <input
