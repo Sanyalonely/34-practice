@@ -9,7 +9,7 @@ import NotFoundPage from "#/routes/notFound.tsx";
 import "../styles/global.css";
 
 export const Route = createRootRoute({
-  notFoundComponent: NotFoundPage,
+  notFoundComponent: () => <NotFoundPage />,
   component: RootComponent,
 });
 
